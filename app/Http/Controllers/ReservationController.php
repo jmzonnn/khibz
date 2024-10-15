@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Reservation;
 use App\Models\Event;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class ReservationController extends Controller
@@ -13,11 +14,11 @@ class ReservationController extends Controller
     {
         // Fetch all events, regardless of date
         $events = Event::all();
-    
+
         return view('reservation', compact('events'));
     }
-    
-    
+
+
 
     public function details(Request $request)
     {
@@ -25,15 +26,18 @@ class ReservationController extends Controller
 
         // Fetch reserved tables for the selected date (Pending status)
         $reservedTables = Reservation::whereDate('date', $selectedDate)
-            ->where('status', 'Pending')
+            ->whereIn('status', ['Pending', 'Completed'])
             ->pluck('table_number')
             ->toArray();
+
 
         // Fetch completed tables for the selected date (Completed status)
         $completedTables = Reservation::whereDate('date', $selectedDate)
             ->where('status', 'Completed')
             ->pluck('table_number')
             ->toArray();
+
+        // dd($reservedTables);
 
         return view('reservation-details', compact('reservedTables', 'completedTables', 'selectedDate'));
     }
@@ -50,10 +54,10 @@ class ReservationController extends Controller
     {
         // Log that the submit method has been called
         Log::info('Submit method called.');
-    
+
         // Log the input data for debugging purposes
         Log::info('Input data: ' . json_encode($request->all()));
-    
+
         // Validate the request data
         $validated = $request->validate([
             'selectedTable' => 'required|string',
@@ -70,17 +74,17 @@ class ReservationController extends Controller
             'screenshot.mimes' => 'Only jpeg, png, jpg, gif, and svg images are allowed.',
             'screenshot.max' => 'The screenshot size should not exceed 2MB.',
         ]);
-    
+
         // Store the screenshot and generate the path
         $screenshotPath = $validated['screenshot']->store('screenshots', 'public');
-    
+
         // Determine the guests count
         $guestsCount = $request->input('guests') !== null ? $request->input('guests') : 0;
-    
+
         // Store the reservation in the database
         Reservation::create([
             'status' => 'Pending',
-            'user_id' => auth()->id(), // Ensure user is authenticated before submitting
+            'user_id' => Auth::user()->id, // Ensure user is authenticated before submitting
             'name' => $validated['name'],
             'email' => $validated['email'],
             'contact' => $validated['contact'],
@@ -91,25 +95,25 @@ class ReservationController extends Controller
             'date' => $validated['date'],
             'request_reason' => $validated['requestReason'] // Store the request reason
         ]);
-    
+
         // Redirect to the reservation index with success message
         return redirect()->route('reservation.index')->with('success', 'Reservation submitted successfully! Your table is now pending.');
     }
-    
+
 
     // Update the reservation status
     public function updateStatus(Request $request)
     {
         $reservation = Reservation::find($request->input('reservationId'));
-    
+
         if ($reservation) {
             // Update the status
             $reservation->status = $request->input('status');
             $reservation->save();
-    
+
             return redirect()->route('admin.reservations')->with('success', 'Reservation status updated successfully!');
         }
-    
+
         return redirect()->route('reservation.index')->with('error', 'Reservation not found.');
     }
 
@@ -148,16 +152,16 @@ class ReservationController extends Controller
     public function history(Request $request)
     {
         $query = Reservation::query();
-    
+
         // Handle search filter
         if ($request->filled('search')) {
             $search = $request->input('search');
             $query->where('name', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%")
-                  ->orWhere('contact', 'like', "%{$search}%")
-                  ->orWhere('table_number', 'like', "%{$search}%");
+                ->orWhere('email', 'like', "%{$search}%")
+                ->orWhere('contact', 'like', "%{$search}%")
+                ->orWhere('table_number', 'like', "%{$search}%");
         }
-    
+
         // Handle rows per page
         $rowsPerPage = $request->input('rowsPerPage', 10);
         if ($rowsPerPage === 'all') {
@@ -165,14 +169,11 @@ class ReservationController extends Controller
         } else {
             $historyReservations = $query->where('status', 'Done')->paginate($rowsPerPage);
         }
-    
+
         if ($request->ajax()) {
             return view('admin.partials.history_table', compact('historyReservations'))->render();
         }
-    
+
         return view('admin.history', compact('historyReservations'));
     }
-    
-    
-    
 }

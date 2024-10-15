@@ -80,7 +80,6 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::delete('events/{event}', [EventController::class, 'destroy'])->name('admin.events.destroy'); // Delete event
     Route::get('/admin/events/{id}/edit', [EventController::class, 'edit'])->name('admin.events.edit');
     Route::post('/admin/events/{id}', [EventController::class, 'update'])->name('admin.events.update');
-    
 });
 
 // Authentication routes
