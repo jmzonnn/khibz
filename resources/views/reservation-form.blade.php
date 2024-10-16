@@ -253,6 +253,11 @@
                 <div id="requestExceptionButton" class="mb-4 hidden">
                     <button type="button" onclick="openRequestModal()" class="button button-request w-full">Request for More Guests</button>
                 </div>
+
+                <div class="mb-4">
+                    <label for="tickets" class="block text-sm font-semibold mb-2">Number of Tickets Paid</label>
+                    <input type="number" id="tickets" name="tickets" placeholder="(Optional)" class="w-full p-2 border border-gray-300 rounded">
+                </div>
                 
                 <div class="mb-4">
                     <label for="screenshot" class="block text-sm font-semibold mb-2">Screenshot of Payment:</label>
@@ -268,6 +273,20 @@
                 <input type="hidden" id="selectedTable" name="selectedTable" value="{{ $selectedTable }}">
                 <input type="hidden" id="date" name="date" value="{{ $selectedDate }}">
                 <input type="hidden" id="requestReasonInput" name="requestReason" value="">
+
+                    <!-- Reservation Queue Policy -->
+                <div class="mt-8 p-4 bg-gray-100 border border-gray-300 rounded">
+                    <h3 class="font-bold text-lg mb-2">RESERVATION QUEUE POLICY</h3>
+                    <p class="text-sm text-gray-700">
+                        As part of our commitment to providing exceptional service to all our guests, we would like to remind you of our queue policy regarding reservations. While placing an order for tickets or reserving a table guarantees your spot, it does not exempt you from queuing upon arrival.
+                    </p>
+                    <p class="text-sm text-gray-700 mt-2">
+                        We kindly ask that all guests, regardless of reservation status, join the queue upon arrival. This ensures fairness and efficiency in accommodating all our valued guests.
+                    </p>
+                    <p class="text-sm text-gray-700 mt-2">
+                        Thank you for your understanding and cooperation in adhering to our queue policy.
+                    </p>
+                </div>
 
                 <div class="flex justify-between mt-4">
                     <button type="button" onclick="history.back()" class="bg-gray-500 text-white py-2 px-4 rounded">Back</button>

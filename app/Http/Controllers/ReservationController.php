@@ -84,7 +84,6 @@ class ReservationController extends Controller
         // Store the reservation in the database
         Reservation::create([
             'status' => 'Pending',
-            'user_id' => Auth::user()->id, // Ensure user is authenticated before submitting
             'name' => $validated['name'],
             'email' => $validated['email'],
             'contact' => $validated['contact'],

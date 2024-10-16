@@ -109,94 +109,135 @@
     }
 
     function generateReport() {
-        const startDate = document.getElementById('startDate').value;
-        const endDate = document.getElementById('endDate').value;
-        let filteredReservations = completedReservations;
+    const startDate = document.getElementById('startDate').value;
+    const endDate = document.getElementById('endDate').value;
+    let filteredReservations = completedReservations;
 
-        if (startDate || endDate) {
-            filteredReservations = completedReservations.filter(reservation => {
-                const reservationDate = new Date(reservation.date);
-                const start = startDate ? new Date(startDate) : null;
-                const end = endDate ? new Date(endDate) : null;
+    if (startDate || endDate) {
+        filteredReservations = completedReservations.filter(reservation => {
+            const reservationDate = new Date(reservation.date);
+            const start = startDate ? new Date(startDate) : null;
+            const end = endDate ? new Date(endDate) : null;
 
-                if (start && end) {
-                    return reservationDate >= start && reservationDate <= end;
-                } else if (start) {
-                    return reservationDate >= start;
-                } else if (end) {
-                    return reservationDate <= end;
-                }
-                return true;
-            });
-        }
-
-        let printContents = `
-            <h2>Completed Reservations Report</h2>
-            <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse;">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Contact</th>
-                        <th>Guests</th>
-                        <th>Guest_Reason</th>
-                        <th>Table Number</th>
-                        <th>Selected Date</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-        `;
-
-        filteredReservations.forEach(reservation => {
-            printContents += `
-                <tr>
-                    <td>${reservation.name}</td>
-                    <td>${reservation.email}</td>
-                    <td>${reservation.contact}</td>
-                    <td>${reservation.guests}</td>
-                    <th>${reservation.request_reason}</td>
-                    <td>${reservation.table_number}</td>
-                    <td>${new Date(reservation.date).toLocaleDateString()}</td>
-                    <td>Completed</td>
-                </tr>
-            `;
+            if (start && end) {
+                return reservationDate >= start && reservationDate <= end;
+            } else if (start) {
+                return reservationDate >= start;
+            } else if (end) {
+                return reservationDate <= end;
+            }
+            return true;
         });
-
-        printContents += `
-                </tbody>
-            </table>
-        `;
-
-        const printWindow = window.open('', '_blank');
-        printWindow.document.open();
-        printWindow.document.write(`
-            <html>
-                <head>
-                    <title>Completed Reservations Report</title>
-                    <style>
-                        table {
-                            width: 100%;
-                            border-collapse: collapse;
-                        }
-                        th, td {
-                            border: 1px solid #ddd;
-                            padding: 8px;
-                            text-align: left;
-                        }
-                        th {
-                            background-color: #f4f4f4;
-                        }
-                    </style>
-                </head>
-                <body>
-                    ${printContents}
-                </body>
-            </html>
-        `);
-        printWindow.document.close();
-        printWindow.print();
     }
+
+    let printContents = `
+        <div style="text-align: center; margin-bottom: 20px;">
+            <img src="/images/logokhibz.png" alt="Khibz Lounge Logo" style="width: 150px; height: auto;">
+            <p style="font-size: 18px; font-weight: bold; margin-top: 10px;">SUPERKHIBZ CORP.</p>
+            <p style="font-size: 14px;">Maharlika Highway, Brgy. 1 - B San Pablo City Laguna, 4000</p>
+            <h2 style="margin-top: 20px; color: red; font-size: 24px;">RESERVATION REPORT</h2>
+        </div>
+        <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Contact</th>
+                    <th>Guests</th>
+                    <th>Guest Reason</th>
+                    <th>Table Number</th>
+                    <th>Selected Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+
+    filteredReservations.forEach(reservation => {
+        printContents += `
+            <tr>
+                <td>${reservation.name}</td>
+                <td>${reservation.email}</td>
+                <td>${reservation.contact}</td>
+                <td>${reservation.guests}</td>
+                <td>${reservation.request_reason}</td>
+                <td>${reservation.table_number}</td>
+                <td>${new Date(reservation.date).toLocaleDateString()}</td>
+                <td>Completed</td>
+            </tr>
+        `;
+    });
+
+    printContents += `
+            </tbody>
+        </table>
+
+        <div style="margin-top: 60px; display: flex; justify-content: space-between; align-items: flex-start;">
+            <div style="text-align: center;">
+                <p><strong>PREPARED BY:</strong></p>
+                <p>__________________________</p>
+                <p>Signature Over Printed Name</p>
+                <p>Position:__________________</p>
+                <p>Date:_____________________</p>
+            </div>
+            <div style="text-align: center;">
+                <p><strong>APPROVED BY:</strong></p>
+                <p>__________________________</p>
+                <p>Signature Over Printed Name</p>
+                <p>Position:__________________</p>
+                <p>Date:_____________________</p>
+            </div>
+        </div>
+    `;
+
+    const printWindow = window.open('', '_blank');
+    printWindow.document.open();
+    printWindow.document.write(`
+        <html>
+            <head>
+                <title>Completed Reservations Report</title>
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        margin: 20px;
+                        padding: 0;
+                    }
+                    table {
+                        width: 100%;
+                        border-collapse: collapse;
+                    }
+                    th, td {
+                        border: 1px solid #ddd;
+                        padding: 8px;
+                        text-align: left;
+                    }
+                    th {
+                        background-color: #f4f4f4;
+                    }
+                    h1, h2, p {
+                        margin: 0;
+                        padding: 0;
+                    }
+                    @media print {
+                        body {
+                            margin: 0;
+                            padding: 0;
+                        }
+                        .page-break { 
+                            page-break-after: always; 
+                        }
+                    }
+                </style>
+            </head>
+            <body>
+                ${printContents}
+            </body>
+        </html>
+    `);
+    printWindow.document.close();
+    printWindow.print();
+}
+
 
     function markReservationsAsDone() {
         const modal = document.getElementById('confirmDoneModal');
