@@ -40,12 +40,6 @@
                     <input type="password" id="password" name="password" required class="w-full p-2 border border-gray-300 rounded" placeholder="Enter your password">
                 </div>
 
-                <!-- Remember Me Checkbox -->
-                <div class="flex items-center mb-4">
-                    <input type="checkbox" id="remember" name="remember" class="mr-2">
-                    <label for="remember" class="text-sm">Remember Me</label>
-                </div>
-
                 <!-- Submit Button -->
                 <div class="flex justify-center">
                     <button type="submit" class="bg-black text-white py-2 px-4 rounded hover:bg-gray-800 transition duration-200">Login</button>

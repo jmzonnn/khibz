@@ -139,7 +139,7 @@
                 <i class="fas fa-clock"></i>
             </div>
             <h3 class="stats-card-title">Pending Orders</h3>
-            <p class="stats-card-text">{{ array_sum($pendingOrdersData) }} pending orders</p> <!-- Shows the total pending orders -->
+            <p class="stats-card-text">{{ $pendingOrdersCount }} pending orders</p> <!-- Shows the total pending orders -->
         </div>
     </div>
 
@@ -150,11 +150,10 @@
                 <i class="fas fa-check"></i>
             </div>
             <h3 class="stats-card-title">Completed Orders</h3>
-            <p class="stats-card-text">{{ array_sum($completedOrdersData) }} completed orders</p> <!-- Shows the total completed orders -->
+            <p class="stats-card-text">{{ $completedOrdersCount }} completed orders</p> <!-- Shows the total completed orders -->
         </div>
     </div>
 </div>
-
 
 </div>
 @endsection
@@ -166,7 +165,7 @@
     document.addEventListener('DOMContentLoaded', function () {
         // Get the sales and reservations data passed from the controller
         var salesData = @json($salesData);
-        var reservationsData = @json($reservationsData); // Reservations for "Done" status
+        var reservationsData = @json($reservationsData);
 
         // Sales chart
         var ctx1 = document.getElementById('salesChart').getContext('2d');
@@ -188,7 +187,7 @@
                         beginAtZero: true,
                         ticks: {
                             callback: function(value) {
-                                return '₱' + value.toLocaleString(); // Format as PHP currency
+                                return '₱' + value.toLocaleString();
                             }
                         }
                     }

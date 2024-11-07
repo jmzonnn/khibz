@@ -52,35 +52,24 @@ class ReservationController extends Controller
 
     public function submit(Request $request)
     {
-        // Log that the submit method has been called
-        Log::info('Submit method called.');
-
-        // Log the input data for debugging purposes
-        Log::info('Input data: ' . json_encode($request->all()));
-
         // Validate the request data
         $validated = $request->validate([
             'selectedTable' => 'required|string',
             'name' => 'required|string',
             'email' => 'required|email',
             'contact' => 'required|string',
-            'guests' => 'nullable|integer|min:0|max:12', // Allow guests to be nullable
+            'guests' => 'nullable|integer|min:0|max:12',
             'screenshot' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'date' => 'required|date',
-            'requestReason' => 'nullable|string|max:255' // Add validation for requestReason
-        ], [
-            'screenshot.required' => 'A screenshot of payment is required.',
-            'screenshot.image' => 'The uploaded file must be an image.',
-            'screenshot.mimes' => 'Only jpeg, png, jpg, gif, and svg images are allowed.',
-            'screenshot.max' => 'The screenshot size should not exceed 2MB.',
+            'additionalRequest' => 'nullable|string|max:255' // Expect 'additionalRequest' instead of 'requestReason'
         ]);
-
+    
         // Store the screenshot and generate the path
         $screenshotPath = $validated['screenshot']->store('screenshots', 'public');
-
+    
         // Determine the guests count
         $guestsCount = $request->input('guests') !== null ? $request->input('guests') : 0;
-
+    
         // Store the reservation in the database
         Reservation::create([
             'status' => 'Pending',
@@ -88,16 +77,16 @@ class ReservationController extends Controller
             'email' => $validated['email'],
             'contact' => $validated['contact'],
             'table_number' => $validated['selectedTable'],
-            'guests' => $guestsCount, // Use the determined guests count
-            'payment_reference' => $request->input('refNo'), // Fetch refNo from request if provided
+            'guests' => $guestsCount,
+            'payment_reference' => $request->input('refNo'),
             'screenshot' => $screenshotPath,
             'date' => $validated['date'],
-            'request_reason' => $validated['requestReason'] // Store the request reason
+            'request_reason' => $validated['additionalRequest'] ?? null // Use 'additionalRequest'
         ]);
-
-        // Redirect to the reservation index with success message
+    
         return redirect()->route('reservation.index')->with('success', 'Reservation submitted successfully! Your table is now pending.');
     }
+    
 
 
     // Update the reservation status

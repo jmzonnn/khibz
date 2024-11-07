@@ -43,7 +43,7 @@
                                 <tr class="hover:bg-gray-50 transition ease-in-out duration-150">
                                     <td class="px-6 py-4 text-sm text-gray-900">{{ $item->id }}</td>
                                     <td class="px-6 py-4 text-sm text-gray-900">{{ $item->name }}</td>
-                                    <td class="px-6 py-4 text-sm text-gray-900">${{ number_format($item->price, 2) }}</td>
+                                    <td class="px-6 py-4 text-sm text-gray-900">₱{{ number_format($item->price, 2) }}</td>
                                     <td class="px-6 py-4">
                                         @if ($item->image)
                                             <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}" class="w-16 h-16 object-cover rounded-lg shadow-sm">

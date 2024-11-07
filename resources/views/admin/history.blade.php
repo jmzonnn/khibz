@@ -132,7 +132,7 @@
                         </p>
                         ${reservation.request_reason ? `<p class="flex items-center mb-2">
                             <i class="fas fa-comment-alt text-gray-500 mr-2"></i>
-                            <strong>Request Reason:</strong> ${reservation.request_reason}
+                            <strong>Request:</strong> ${reservation.request_reason}
                         </p>` : ''}
                         ${reservation.screenshot ? `<p class="flex items-center mb-2">
                             <i class="fas fa-file-image text-gray-500 mr-2"></i>

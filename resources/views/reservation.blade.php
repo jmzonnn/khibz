@@ -200,26 +200,9 @@
                     <!-- Styled Event Title -->
                     <h2 class="text-4xl font-extrabold text-center mb-4 tracking-wider">{{ strtoupper($event->event_date->format('F j, Y')) }} RESERVATION</h2>
                 
-                    <!-- Fetch Event Description from the database -->
                     <p class="text-center text-lg mb-4">
-                        {{ $event->description }}
+                        {!! nl2br(e($event->description)) !!}
                     </p>
-                
-                    <!-- Event Details -->
-                    <p class="text-center text-base mb-4">
-                        {{ $event->event_date->format('F j, Y | l') }} <br>
-                        <strong>EARLY BIRD:</strong> 200 <br>
-                        <strong>WALK IN:</strong> 250
-                    </p>
-                
-                    <!-- Ticket Policy Section -->
-                    <div class="text-left p-4 bg-gray-100 rounded-md shadow-md">
-                        <h3 class="font-bold mb-2">Ticket Policy:</h3>
-                        <ul class="list-disc list-inside">
-                            <li><strong>Early Bird tickets:</strong> Purchase at a discounted rate before the event. Must be paid in advance.</li>
-                            <li><strong>Walk-In tickets:</strong> Available at regular rate on event day, subject to availability.</li>
-                        </ul>
-                    </div>
                 </div>
                 @endforeach
             @endif

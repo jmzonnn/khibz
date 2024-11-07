@@ -243,20 +243,14 @@
                 </div>
                 <div class="mb-4">
                     <label for="guests" class="block text-sm font-semibold mb-2">Number of Guests:</label>
-                    <input type="number" id="guests" name="guests" min="1" max="12" required class="w-full p-2 border border-gray-300 rounded" oninput="checkGuestCount()">
+                    <input type="number" id="guests" name="guests" min="1" max="12" required class="w-full p-2 border border-gray-300 rounded" oninput="checkGuestLimit()">
                     <span id="guestError" class="text-red-500 text-sm"></span>
-                    <div id="guestRequestMessage" class="mt-2 hidden text-green-500">
-                        Requested <button type="button" class="text-red-500 ml-2" onclick="cancelRequest()">x</button>
-                    </div>
                 </div>
                 
-                <div id="requestExceptionButton" class="mb-4 hidden">
-                    <button type="button" onclick="openRequestModal()" class="button button-request w-full">Request for More Guests</button>
-                </div>
-
+                <!-- Updated Additional Requests Section -->
                 <div class="mb-4">
-                    <label for="tickets" class="block text-sm font-semibold mb-2">Number of Tickets Paid</label>
-                    <input type="number" id="tickets" name="tickets" placeholder="(Optional)" class="w-full p-2 border border-gray-300 rounded">
+                    <label for="additionalRequest" class="block text-sm font-semibold mb-2">Requests:</label>
+                    <textarea id="additionalRequest" name="additionalRequest" rows="3" placeholder="(Optional)" class="w-full p-2 border border-gray-300 rounded text-gray-500"></textarea>
                 </div>
                 
                 <div class="mb-4">
@@ -272,21 +266,6 @@
                 
                 <input type="hidden" id="selectedTable" name="selectedTable" value="{{ $selectedTable }}">
                 <input type="hidden" id="date" name="date" value="{{ $selectedDate }}">
-                <input type="hidden" id="requestReasonInput" name="requestReason" value="">
-
-                    <!-- Reservation Queue Policy -->
-                <div class="mt-8 p-4 bg-gray-100 border border-gray-300 rounded">
-                    <h3 class="font-bold text-lg mb-2">RESERVATION QUEUE POLICY</h3>
-                    <p class="text-sm text-gray-700">
-                        As part of our commitment to providing exceptional service to all our guests, we would like to remind you of our queue policy regarding reservations. While placing an order for tickets or reserving a table guarantees your spot, it does not exempt you from queuing upon arrival.
-                    </p>
-                    <p class="text-sm text-gray-700 mt-2">
-                        We kindly ask that all guests, regardless of reservation status, join the queue upon arrival. This ensures fairness and efficiency in accommodating all our valued guests.
-                    </p>
-                    <p class="text-sm text-gray-700 mt-2">
-                        Thank you for your understanding and cooperation in adhering to our queue policy.
-                    </p>
-                </div>
 
                 <div class="flex justify-between mt-4">
                     <button type="button" onclick="history.back()" class="bg-gray-500 text-white py-2 px-4 rounded">Back</button>
@@ -307,27 +286,12 @@
                             <li><strong>Number of Guests:</strong> <span id="confirmGuests"></span></li>
                             <li><strong>Selected Table:</strong> <span id="confirmTable"></span></li>
                             <li><strong>Selected Date:</strong> <span id="confirmDate"></span></li>
-                            <li id="confirmRequestReason" class="hidden"><strong>Request Reason:</strong> <span></span></li>
+                            <li><strong>Requests:</strong> <span id="confirmRequest"></span></li>
                         </ul>
                     </div>
                     <div class="modal-footer">
                         <button onclick="closeModal()" class="button button-edit">Edit</button>
                         <button onclick="submitForm()" class="button button-confirm">Confirm and Reserve</button>
-                    </div>
-                </div>
-            </div>
-
-            <div id="requestModal" class="request-modal">
-                <div class="request-modal-content">
-                    <span class="close" onclick="closeRequestModal()">&times;</span>
-                    <div class="modal-header">Request for Additional Guests</div>
-                    <div class="modal-body">
-                        <p>Please provide a reason or special request to exceed the maximum guest limit:</p>
-                        <textarea id="requestReason" rows="4" class="w-full p-2 border border-gray-300 rounded"></textarea>
-                    </div>
-                    <div class="modal-footer">
-                        <button onclick="closeRequestModal()" class="button button-edit">Cancel</button>
-                        <button onclick="submitRequest()" class="button button-confirm">Submit Request</button>
                     </div>
                 </div>
             </div>
@@ -338,11 +302,7 @@
                     <div class="div_image_v">
                         <div class="image">
                             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                <g id="SVGRepo_iconCarrier">
-                                    <path d="M20 7L9.00004 18L3.99994 13" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                </g>
+                                <path d="M20 7L9.00004 18L3.99994 13" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
                             </svg>
                         </div>
                     </div>
@@ -352,7 +312,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
@@ -405,6 +364,18 @@
         }
     }
 
+    function checkGuestLimit() {
+        const guestInput = document.getElementById('guests');
+        const guestError = document.getElementById('guestError');
+        
+        if (parseInt(guestInput.value) > 12) {
+            guestError.textContent = 'The maximum number of guests is 12.';
+            guestInput.value = 12;
+        } else {
+            guestError.textContent = '';
+        }
+    }
+
     function openModal() {
         if (!validatePhoneNumber() || !checkFileSize({ target: document.getElementById('screenshot') }) || !validateEmail()) return;
 
@@ -414,21 +385,15 @@
         const guests = document.getElementById('guests').value;
         const selectedTable = document.getElementById('selectedTable').value;
         const date = document.getElementById('date').value;
-        const requestReason = document.getElementById('requestReasonInput').value;
+        const additionalRequest = document.getElementById('additionalRequest').value;
 
         document.getElementById('confirmName').textContent = name;
         document.getElementById('confirmEmail').textContent = email;
         document.getElementById('confirmPhone').textContent = contact;
-        document.getElementById('confirmGuests').textContent = guests || 'Requested';
+        document.getElementById('confirmGuests').textContent = guests;
         document.getElementById('confirmTable').textContent = selectedTable;
         document.getElementById('confirmDate').textContent = date;
-
-        if (requestReason) {
-            document.getElementById('confirmRequestReason').classList.remove('hidden');
-            document.getElementById('confirmRequestReason').querySelector('span').textContent = requestReason;
-        } else {
-            document.getElementById('confirmRequestReason').classList.add('hidden');
-        }
+        document.getElementById('confirmRequest').textContent = additionalRequest || 'None';
 
         document.getElementById('confirmationModal').style.display = 'flex';
     }
@@ -447,49 +412,6 @@
 
     function closeSuccessMessage() {
         document.getElementById('successMessage').style.display = 'none';
-    }
-
-    function checkGuestCount() {
-        const guestInput = document.getElementById('guests');
-        const guestError = document.getElementById('guestError');
-        const requestButton = document.getElementById('requestExceptionButton');
-        const maxGuests = 12;
-
-        if (parseInt(guestInput.value) > maxGuests) {
-            guestError.textContent = 'The maximum number of guests is 12.';
-            guestInput.value = maxGuests; 
-            requestButton.classList.remove('hidden');
-        } else {
-            guestError.textContent = '';
-            requestButton.classList.add('hidden');
-        }
-    }
-
-    function openRequestModal() {
-        document.getElementById('requestModal').style.display = 'flex';
-    }
-
-    function closeRequestModal() {
-        document.getElementById('requestModal').style.display = 'none';
-    }
-
-    function submitRequest() {
-        const reason = document.getElementById('requestReason').value;
-        if (reason.trim() === '') {
-            alert('Please provide a reason for the request.');
-            return;
-        }
-        document.getElementById('requestReasonInput').value = reason;
-        document.getElementById('requestModal').style.display = 'none';
-        document.getElementById('guests').disabled = true;
-        document.getElementById('guests').value = '';
-        document.getElementById('guestRequestMessage').classList.remove('hidden');
-    }
-
-    function cancelRequest() {
-        document.getElementById('requestReasonInput').value = '';
-        document.getElementById('guests').disabled = false;
-        document.getElementById('guestRequestMessage').classList.add('hidden');
     }
 </script>
 

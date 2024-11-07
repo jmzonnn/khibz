@@ -1158,11 +1158,11 @@
                     requirementsDiv.innerHTML = `
                 <h3 class="font-bold">VIP Reservation Requirements:</h3>
                 <ul>
-                    <li>VIP guests must avail 1 bundle to reserve their VIP couch.</li>
-                    <li>The VIP couch can accommodate 10-12 people.</li>
-                    <li>To secure your reservation, a non-refundable downpayment of Php 1,000 should be settled. This amount will be deducted from the total bill on the day of your reservation.</li>
-                    <li>Your table will be held for a duration of 2 hours. If your party has not arrived within this time, we reserve the right to disregard your reservation. (Waiting time starts at 8PM)</li>
-                    <li>Entrance fee will be charged to your total bill.</li>
+                    <li>-VIP guests must avail 1 bundle to reserve their VIP couch.</li>
+                    <li>-The VIP couch can accommodate 10-12 people.</li>
+                    <li>-To secure your reservation, a non-refundable downpayment of Php 1,000 should be settled. This amount will be deducted from the total bill on the day of your reservation.</li>
+                    <li>-(STRICTLY)Your table will be held until 10PM ONLY. If your party has not arrived within this time, we reserve the right to disregard your reservation and your reservation will be forfeited and will be marked as NO-SHOW.</li>
+                    <li>-Entrance fee will be charged to your total bill.</li>
                 </ul>
             `;
                     tableSelectionDiv.style.display = 'block';
@@ -1172,10 +1172,10 @@
                     requirementsDiv.innerHTML = `
                 <h3 class="font-bold">TABLE COCKTAIL RESERVATION:</h3>
                 <ul>
-                    <li>Minimum of 2 orders of cocktail towers or 1 hard drink.</li>
-                    <li>The VIP couch can accommodate 10-12 people.</li>
-                    <li>To secure your reservation, a non-refundable downpayment of Php 1,000 should be settled. This amount will be deducted from the total bill on the day of your reservation.</li>
-                    <li>Your table will be held for a duration of 2 hours. If your party has not arrived within this time, we reserve the right to disregard your reservation. (Waiting time starts at 8PM)</li>
+                    <li>-Minimum of 2 orders of cocktail towers or 1 hard drink.</li>
+                    <li>-The VIP couch can accommodate 10-12 people.</li>
+                    <li>-To secure your reservation, a non-refundable downpayment of Php 1,000 should be settled. This amount will be deducted from the total bill on the day of your reservation.</li>
+                    <li>-(STRICTLY)Your table will be held until 10PM ONLY  . If your party has not arrived within this time, we reserve the right to disregard your reservation and your reservation will be forfeited and will be marked as NO-SHOW.</li>
                 </ul>
             `;
                     tableSelectionDiv.style.display = 'block';
