@@ -44,11 +44,6 @@
                 <div class="flex justify-center">
                     <button type="submit" class="bg-black text-white py-2 px-4 rounded hover:bg-gray-800 transition duration-200">Login</button>
                 </div>
-
-                <!-- Forgot Password Link -->
-                <div class="text-center mt-4">
-                    <a href="#" class="text-blue-600 hover:underline">Forgot your password?</a>
-                </div>
             </form>
         </div>
     </div>
